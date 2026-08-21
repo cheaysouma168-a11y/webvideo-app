@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Video Downloader</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📹 Web Video Downloader</h1>
+            <p>ដាក់ពលវិក្កិច្ច Download ខ្សែភាពយន្ត</p>
+        </header>
+
+        <main>
+            <div class="input-section">
+                <h2>ចូលផ្តើម Download</h2>
+                <div class="input-group">
+                    <label for="videoUrl">ឯកសារ URL:</label>
+                    <input type="text" id="videoUrl" placeholder="https://wetv.vip/play/...">
+                </div>
+
+                <div class="input-group">
+                    <label for="fileName">ឈ្មោះឯកសារ:</label>
+                    <input type="text" id="fileName" placeholder="របៀប">
+                </div>
+
+                <div class="input-group">
+                    <label for="website">ជ្រើសរើសគេហទំព័ត៍:</label>
+                    <select id="website">
+                        <option value="auto">ស្វាគមន៍ដោយស្វ័យប្រវត្តិ</option>
+                        <option value="bilibili">Bilibili</option>
+                        <option value="iqiyi">IQIYI</option>
+                        <option value="qq">Tencent Video</option>
+                        <option value="mgtv">Mango TV</option>
+                        <option value="wetv">WeTV</option>
+                        <option value="iq">IQiyi International</option>
+                    </select>
+                </div>
+
+                <button id="downloadBtn" class="btn-download">⬇️ Download ឥឡូវនេះ</button>
+            </div>
+
+            <div class="status-section">
+                <h2>ស្ថានភាព Download</h2>
+                <div id="status" class="status-box status-idle">
+                    <p>រង្វង់...</p>
+                </div>
+                <div id="progress" class="progress-container" style="display:none;">
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <p id="progressText">0%</p>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2>ℹ️ ព័ត៌មាន</h2>
+                <ul>
+                    <li>✅ ឧបករណ៍ Bilibili, IQIYI, WeTV</li>
+                    <li>✅ Download Subtitles</li>
+                    <li>✅ Multi-threaded download</li>
+                </ul>
+            </div>
+        </main>
+
+        <footer>
+            <p>Powered by <a href="https://github.com/STharanga/webvideo-downloader" target="_blank">webvideo-downloader</a></p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
