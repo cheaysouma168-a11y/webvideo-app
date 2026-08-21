@@ -1,0 +1,75 @@
+const downloadBtn = document.getElementById('downloadBtn');
+const videoUrlInput = document.getElementById('videoUrl');
+const fileNameInput = document.getElementById('fileName');
+const websiteSelect = document.getElementById('website');
+const statusDiv = document.getElementById('status');
+const progressDiv = document.getElementById('progress');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+
+const SERVER_URL = 'http://localhost:5000';
+
+downloadBtn.addEventListener('click', async () => {
+    const videoUrl = videoUrlInput.value.trim();
+    const fileName = fileNameInput.value.trim() || 'video';
+    const website = websiteSelect.value;
+
+    if (!videoUrl) {
+        showStatus('សូមបញ្ចូល URL ដែលមានសុពលភាព', 'error');
+        return;
+    }
+
+    downloadVideo(videoUrl, fileName, website);
+});
+
+function isValidUrl(string) {
+    try {
+        new URL(string);
+        return true;
+    } catch (_) {
+        return false;
+    }
+}
+
+async function downloadVideo(url, fileName, website) {
+    downloadBtn.disabled = true;
+    showStatus('ចាប់ផ្តើម download...', 'loading');
+    progressDiv.style.display = 'block';
+
+    try {
+        const response = await fetch(`${SERVER_URL}/download`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                url: url,
+                fileName: fileName,
+                website: website
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+            showStatus('✅ Download បានលទ្ធផល!', 'success');
+            updateProgress(100);
+        } else {
+            showStatus(`❌ កំហុស: ${data.message}`, 'error');
+        }
+    } catch (error) {
+        showStatus(`❌ កំហុស: ${error.message}`, 'error');
+    } finally {
+        downloadBtn.disabled = false;
+    }
+}
+
+function showStatus(message, type) {
+    statusDiv.textContent = message;
+    statusDiv.className = `status-box status-${type}`;
+}
+
+function updateProgress(percent) {
+    progressFill.style.width = percent + '%';
+    progressText.textContent = percent + '%';
+}
