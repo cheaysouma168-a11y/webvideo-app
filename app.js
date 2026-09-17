@@ -73,3 +73,58 @@ function updateProgress(percent) {
     progressFill.style.width = percent + '%';
     progressText.textContent = percent + '%';
 }
+
+// Mini Android Preview: wraps the app inside a phone-shaped frame so it can
+// be previewed as a mobile/Android view without leaving the browser.
+const androidToggleBtn = document.getElementById('androidToggleBtn');
+const appContainer = document.querySelector('.container');
+let androidFrameEl = null;
+let androidClockInterval = null;
+
+androidToggleBtn.addEventListener('click', () => {
+    const isActive = document.body.classList.toggle('android-preview-active');
+    if (isActive) {
+        enableAndroidFrame();
+    } else {
+        disableAndroidFrame();
+    }
+});
+
+function enableAndroidFrame() {
+    androidFrameEl = document.createElement('div');
+    androidFrameEl.className = 'android-frame';
+    androidFrameEl.innerHTML = `
+        <div class="android-notch"></div>
+        <div class="android-statusbar">
+            <span id="androidClock">9:41</span>
+            <span>🔋 📶 📡</span>
+        </div>
+        <div class="android-screen"></div>
+        <div class="android-navbar">
+            <span>◁</span>
+            <span>○</span>
+            <span>▢</span>
+        </div>
+    `;
+    document.body.insertBefore(androidFrameEl, appContainer);
+    androidFrameEl.querySelector('.android-screen').appendChild(appContainer);
+
+    updateAndroidClock();
+    androidClockInterval = setInterval(updateAndroidClock, 30000);
+}
+
+function disableAndroidFrame() {
+    if (!androidFrameEl) return;
+    document.body.insertBefore(appContainer, androidFrameEl);
+    androidFrameEl.remove();
+    androidFrameEl = null;
+    clearInterval(androidClockInterval);
+    androidClockInterval = null;
+}
+
+function updateAndroidClock() {
+    const clockEl = document.getElementById('androidClock');
+    if (clockEl) {
+        clockEl.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
+    }
+}

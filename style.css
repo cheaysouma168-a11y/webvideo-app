@@ -131,3 +131,77 @@ footer a {
     color: #667eea;
     text-decoration: none;
 }
+
+/* Mini Android Preview */
+.android-toggle-btn {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1000;
+    background: #1a1a1a;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.android-toggle-btn:hover {
+    background: #333;
+}
+
+body.android-preview-active {
+    background: #0d0d0d;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.android-frame {
+    width: 360px;
+    background: #111;
+    border-radius: 36px;
+    padding: 12px 10px 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.android-frame .android-notch {
+    width: 120px;
+    height: 18px;
+    background: #111;
+    border-radius: 0 0 14px 14px;
+    margin: 0 auto;
+}
+
+.android-frame .android-statusbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 16px 4px;
+    color: #fff;
+    font-size: 0.75em;
+}
+
+.android-frame .android-screen {
+    background: #fff;
+    border-radius: 18px;
+    overflow-y: auto;
+    max-height: 640px;
+}
+
+.android-frame .android-navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px 0 2px;
+    color: #ccc;
+    font-size: 0.9em;
+}
+
+body.android-preview-active .container {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: 100%;
+}
