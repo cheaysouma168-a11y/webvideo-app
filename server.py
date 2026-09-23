@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import os
 import threading
@@ -78,12 +78,20 @@ def run_download(task_id, url, file_name):
         'quiet': True,
         'no_warnings': True,
         'noplaylist': True,
+        'merge_output_format': 'mp4',
     }
 
     try:
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
             info = ydl.extract_info(url, download=True)
-            filename = os.path.basename(ydl.prepare_filename(info))
+            filepath = None
+            for d in info.get('requested_downloads') or []:
+                if d.get('filepath'):
+                    filepath = d['filepath']
+                    break
+            if not filepath:
+                filepath = ydl.prepare_filename(info)
+            filename = os.path.basename(filepath)
         with tasks_lock:
             tasks[task_id].update({'status': 'completed', 'percent': 100, 'file': filename})
     except Exception as e:
@@ -101,6 +109,11 @@ def list_videos():
         return jsonify({'success': True, 'videos': videos})
     except Exception as e:
         return jsonify({'success': False, 'message': str(e)}), 500
+
+
+@app.route('/videos/<path:filename>', methods=['GET'])
+def get_video(filename):
+    return send_from_directory(DOWNLOAD_DIR, filename, as_attachment=True)
 
 
 if __name__ == '__main__':

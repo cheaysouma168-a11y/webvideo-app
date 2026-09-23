@@ -84,6 +84,7 @@ function pollStatus(taskId) {
                 updateProgress(100);
                 showStatus(`✅ Download បានលទ្ធផល: ${data.file}`, 'success');
                 downloadBtn.disabled = false;
+                triggerFileSave(data.file);
             } else if (data.status === 'error') {
                 clearInterval(pollTimer);
                 showStatus(`❌ កំហុស: ${data.message}`, 'error');
@@ -95,6 +96,17 @@ function pollStatus(taskId) {
             downloadBtn.disabled = false;
         }
     }, 1000);
+}
+
+function triggerFileSave(fileName) {
+    if (!fileName) return;
+    const url = `${SERVER_URL}/videos/${encodeURIComponent(fileName)}`;
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
 }
 
 function showStatus(message, type) {
